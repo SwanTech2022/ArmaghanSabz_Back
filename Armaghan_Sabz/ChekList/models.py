@@ -19,4 +19,4 @@ class Checklist(models.Model):
     file_name = models.TextField()
     confirm = models.BooleanField()
     user_id = models.IntegerField()
-    signe = models.TextField()
+    signe = models.TextField(null=True)

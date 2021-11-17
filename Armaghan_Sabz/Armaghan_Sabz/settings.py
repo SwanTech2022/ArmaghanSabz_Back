@@ -93,7 +93,7 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
         # 'ENGINE': 'django.db.backends.mysql',
         # 'NAME': 'aspower_armaghan',
-        # 'HOST': 'localhost',                 
+        # 'HOST': 'aspower.ir',
         # 'PORT': '3307',  
         # 'USER': 'aspower_aspower',
         # 'PASSWORD': 'zoLk@t64KyV1',
