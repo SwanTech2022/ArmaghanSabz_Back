@@ -101,6 +101,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
         return Response(status.HTTP_200_OK)
 
+
     
 class LoginSerializer(serializers.ModelSerializer):
     def validate(self, validated_data):

@@ -1,3 +1,4 @@
+from django.db.models import fields
 from django.shortcuts import render
 from django.db import models
 from redis import ResponseError
@@ -57,8 +58,10 @@ class RegisterApi(CreateAPIView):
     serializer_class = RegisterSerializer
 
 
-# class LoginApi(CreateAPIView):
-#     serializer_class = LoginSerializer    
+class LoginApi(ListAPIView):
+    serializer_class = LoginSerializer 
+    queryset = Profile.objects.all()   
+
 
 class UserListView(ListAPIView):
     permission_classes = (IsAdminUser,)

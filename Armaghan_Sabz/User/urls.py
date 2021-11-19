@@ -13,6 +13,7 @@ urlpatterns = [
     path('otp/', views.verificationApi),
     path('phone/<str:phone_number>/register/', RegisterApi.as_view(), name='register-user'),
     path('register/', RegisterApi.as_view(), name='register'),
+    path('login/', LoginApi.as_view(), name='log_in'),
     path('user/', UserListView.as_view(), name='all-user'),
     path('user/<int:pk>/', ProfileView.as_view(), name='profile'),
     path('user/<int:pk>/edit/', EditProfileView.as_view(), name='edit-profile'),
