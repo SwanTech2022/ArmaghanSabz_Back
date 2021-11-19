@@ -100,7 +100,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         permission = validated_data['permission'] )
 
 
-        return user
+        return Response(status.HTTP_200_OK)
 
     
 class LoginSerializer(serializers.ModelSerializer):
