@@ -10,6 +10,9 @@ from rest_framework import viewsets , status
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework.viewsets import GenericViewSet
+from django.views.generic import ListView
+from django.core.paginator import Paginator
+from django.shortcuts import render
 
 
 
@@ -45,3 +48,16 @@ class ChecklistView(viewsets.ViewSet):
         Checklist.objects.get(id=pk).delete()
         return Response("Item has been deleted successfully", status=status.HTTP_204_NO_CONTENT)
     
+
+
+# class ContactListView(ListView):
+#     paginate_by = 2
+#     model = Checklist
+      
+#     def listing(request):
+#         contact_list = Checklist.objects.all()
+#         paginator = Paginator(contact_list, 25) # Show 25 contacts per page.
+
+#         page_number = request.GET.get('page')
+#         page_obj = paginator.get_page(page_number)
+#         return render(request, 'list.html', {'page_obj': page_obj})            
