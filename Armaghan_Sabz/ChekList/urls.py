@@ -5,10 +5,10 @@ from django.urls import path
 
 urlpatterns = [
     
-    path('List/' ,  ChecklistView.as_view({'get':'list',})),
-    path('Create/' ,  ChecklistView.as_view({'post':'create',})),
-    path('Update//<int:pk>/' ,  ChecklistView.as_view({'put':'retrieve',})),
-    path('Delete/<int:pk>/' ,  ChecklistView.as_view({'delete': 'destroy',})),
+    path('list/' ,  ChecklistView.as_view({'get':'list',})),
+    path('create/' ,  ChecklistView.as_view({'post':'create',})),
+    path('update/<int:pk>/' ,  ChecklistView.as_view({'put':'retrieve',})),
+    path('delete/<int:pk>/' ,  ChecklistView.as_view({'delete': 'destroy',})),
 
 
 ]
