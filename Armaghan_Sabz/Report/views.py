@@ -17,14 +17,24 @@ from rest_framework.viewsets import GenericViewSet
 class ReaportView(viewsets.ViewSet):
     serializer_class = ReportSerializer
     queryset = Reaport.objects.all()
+    
+    def allList(self, request,pk=id):
+        # queryset = Reaport.objects.all
+        serializer = ReportSerializer(self.queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
      
-    def list(self, request):
-        data = request.GET.get('id')
-        if data == empty :
-            queryset = Reaport.objects.all
-        else:  
-            queryset = Reaport.objects.filter(id=data)
+    def oneList(self, request,pk=id):
+        queryset = Reaport.objects.filter(id=pk)
+        serializer = ReportSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
         
+    def local(self, request,pk=id):
+        queryset = Reaport.objects.filter(confirm=False)
+        serializer = ReportSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+        
+    def final(self, request,pk=id):
+        queryset = Reaport.objects.filter(confirm=True)
         serializer = ReportSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -45,8 +55,8 @@ class ReaportView(viewsets.ViewSet):
     
     
     def destroy(self, request,pk=id):
-        serializer = ReportSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+        # serializer = ReportSerializer(data=request.data)
+        # serializer.is_valid(raise_exception=True)
         Reaport.objects.get(id=pk).delete()
         return Response("Item has been deleted successfully", status=status.HTTP_204_NO_CONTENT)
     

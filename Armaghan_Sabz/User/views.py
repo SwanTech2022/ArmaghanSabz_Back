@@ -64,24 +64,24 @@ class LoginApi(ListAPIView):
 
 
 class UserListView(ListAPIView):
-    permission_classes = (IsAdminUser,)
+    # permission_classes = (IsAdminUser,)
     queryset = Profile.objects.all()
     serializer_class = UserSerializer
-    lookup_field = 'pk'
+    lookup_field = 'phone_number'
 
 
 class ProfileView(RetrieveAPIView):
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
     queryset = Profile.objects.all()
     serializer_class = UserSerializer
-    lookup_field = 'pk'
+    lookup_field = 'phone_number'
 
 
 class EditProfileView(UpdateAPIView):
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
     queryset = Profile.objects.all()
     serializer_class = EditProfileUserSerializer
-    lookup_field ='pk'
+    lookup_field ='phone_number'
 
 
 
