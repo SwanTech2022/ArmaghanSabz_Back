@@ -19,18 +19,18 @@ from django.shortcuts import render
 class ChecklistView(viewsets.ViewSet):
     serializer_class = ChecklistSerializer
     queryset = Checklist.objects.all()
-     
+
     def list(self, request):
         queryset = Checklist.objects.filter(kind = request.GET.get('kind', False), confirm = request.GET.get('confirm', False))
         serializer = ChecklistSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
     def create(self, request):
         serializer = ChecklistSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    
+
     def retrieve(self, request, pk=id):
         serializer = ChecklistSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -39,25 +39,25 @@ class ChecklistView(viewsets.ViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
-    
-    
-    
+
+
+
     def destroy(self, request,pk=id):
         serializer = ChecklistSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         Checklist.objects.get(id=pk).delete()
         return Response("Item has been deleted successfully", status=status.HTTP_204_NO_CONTENT)
-    
 
 
-# class ContactListView(ListView):
-#     paginate_by = 2
-#     model = Checklist
-      
-#     def listing(request):
-#         contact_list = Checklist.objects.all()
-#         paginator = Paginator(contact_list, 25) # Show 25 contacts per page.
 
-#         page_number = request.GET.get('page')
-#         page_obj = paginator.get_page(page_number)
-#         return render(request, 'list.html', {'page_obj': page_obj})            
+class ContactListView(ListView):
+    paginate_by = 2
+    model = Checklist
+
+    def listing(request):
+        contact_list = Checklist.objects.all()
+        paginator = Paginator(contact_list, 25) # Show 25 contacts per page.
+
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(request, 'list.html', {'page_obj': page_obj})

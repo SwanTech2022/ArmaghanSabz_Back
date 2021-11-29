@@ -12,7 +12,6 @@ from .utils import make_verification_code
 from random import randint
 
 
-
 # class PhoneNumberSerializer(serializers.Serializer):
 #     phone = serializers.CharField(max_length=11)
 
@@ -23,34 +22,31 @@ from random import randint
 
 #         return {'phone': 'your phone number wrong'}
 
-    
-
-
 
 class OtpSerializer(serializers.ModelSerializer):
     class Meta:
         model = OTP
-        fields = ('phone_number' , )
+        fields = ('phone_number',)
 
     def create(self, validated_data):
-            obj = super().create(validated_data )
-            obj.code = str(randint(10000,99999))
-            obj.save()
-            make_verification_code(validated_data['phone_number'] , obj.code)
-            return obj 
-    
+        obj = super().create(validated_data)
+        obj.code = str(randint(10000, 99999))
+        obj.save()
+        make_verification_code(validated_data['phone_number'], obj.code)
+        return obj
+
+    # check sms code with entiry code for login
 
 
-# check sms code with entiry code for login
 class VerificationSerializer(serializers.Serializer):
     # phone = serializers.CharField(max_length=11)
     # code = serializers.CharField(max_length=5)
-    
+
     class Meta:
         model = OTP
         fields = '__all__'
 
-    def verify(self , validate_data):
+    def verify(self, validate_data):
         obj = super().create(validate_data)
 
     # def create(self, validated_data):
@@ -58,15 +54,13 @@ class VerificationSerializer(serializers.Serializer):
     #     code = validated_data['code']
     #     query = OTP.objects.filter(phone_number = phone , code = code)
 
-        
-        # if data == 'code expierd':    
-        #     return {'phone':validated_data['phone'], 'code': 'code expierd time'}
+    # if data == 'code expierd':
+    #     return {'phone':validated_data['phone'], 'code': 'code expierd time'}
 
-        # elif data == validated_data['code']: 
-        #     return validated_data
-        
-        # return {'phone':validated_data['phone'], 'code': 'code is not correct'}
+    # elif data == validated_data['code']:
+    #     return validated_data
 
+    # return {'phone':validated_data['phone'], 'code': 'code is not correct'}
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -74,38 +68,35 @@ class RegisterSerializer(serializers.ModelSerializer):
         model = Profile
         fields = '__all__'
         extra_kwargs = {
-            'password':{'write_only': True},
-        }     
+            'password': {'write_only': True},
+        }
 
     def create(self, validated_data):
         user = Profile.objects.create(
-        name = validated_data['name'],
-        family = validated_data['family'],
-        identity_code = validated_data['identity_code'],
-        password = make_password(validated_data['password']), 
-        phone_number=validated_data['phone_number'],
-        id_number = validated_data['id_number'],
-        serial_number = validated_data['serial_number'],
-        address = validated_data['address'],
-        education = validated_data['education'],
-        grade = validated_data['grade'],
-        support_phone_number =validated_data['support_phone_number'],
-        telephone = validated_data['telephone'],
-        zip_code = validated_data['zip_code'],
-        profession = validated_data['profession'],
-        workplace_address = validated_data['workplace_address'],
-        job_position =validated_data['job_position'],
-        workplace_number = validated_data['workplace_number'],
-        permission = validated_data['permission'] )
+            name=validated_data['name'],
+            family=validated_data['family'],
+            identity_code=validated_data['identity_code'],
+            password=make_password(validated_data['password']),
+            phone_number=validated_data['phone_number'],
+            id_number=validated_data['id_number'],
+            serial_number=validated_data['serial_number'],
+            address=validated_data['address'],
+            education=validated_data['education'],
+            grade=validated_data['grade'],
+            support_phone_number=validated_data['support_phone_number'],
+            telephone=validated_data['telephone'],
+            zip_code=validated_data['zip_code'],
+            profession=validated_data['profession'],
+            workplace_address=validated_data['workplace_address'],
+            job_position=validated_data['job_position'],
+            workplace_number=validated_data['workplace_number'],
+            permission=validated_data['permission'])
+
+        return user
 
 
-        return Response(status.HTTP_200_OK)
-
-
-    
 class LoginSerializer(serializers.ModelSerializer):
     def validate(self, validated_data):
-
         if Profile.objects.filter(phone=validated_data['phone_number']):
             # ,Permission=True
             pass
@@ -117,9 +108,8 @@ class UserSerializer(serializers.ModelSerializer):
         model = Profile
         fields = '__all__'
         extra_kwargs = {
-            'password':{'write_only': True},
-        }    
-
+            'password': {'write_only': True},
+        }
 
 
 class EditProfileUserSerializer(serializers.ModelSerializer):
@@ -127,12 +117,12 @@ class EditProfileUserSerializer(serializers.ModelSerializer):
         model = Profile
         fields = '__all__'
         extra_kwargs = {
-            'password':{'write_only': True},
-        }     
+            'password': {'write_only': True},
+        }
+
+    # you can login with email and phone_number
 
 
-
-# you can login with email and phone_number
 class CustomJWTSerializer(TokenObtainPairSerializer):
     username_field = 'phone_number'
 
@@ -147,15 +137,14 @@ class CustomJWTSerializer(TokenObtainPairSerializer):
             credentials['phone_number'] = user_obj.phone_number
 
         return super().validate(credentials)
-      
 
 
 # forget pass send code with phone/email
 class ForgetPassSerializer(serializers.Serializer):
     phone = serializers.IntegerField()
-    class Meta:
-        fields = ['phone_number' , 'password']
 
+    class Meta:
+        fields = ['phone_number', 'password']
 
     # def create(self, validated_data):
     #     print(validated_data)
@@ -163,27 +152,24 @@ class ForgetPassSerializer(serializers.Serializer):
     #     return validated_data
 
 
-
 # check sms code with entiry code for login
 # class VerificationForgetSerializer(serializers.Serializer):
 #     phone = serializers.IntegerField()
 #     code = serializers.CharField(max_length=5)
-    
+
 #     def create(self, validated_data):
 #         data = verification(validated_data['phone'])
 
-#         if data == 'code expierd':    
+#         if data == 'code expierd':
 #             return {'phone':validated_data['phone'], 'code': 'code expierd time'}
 
-#         elif data == validated_data['code']: 
+#         elif data == validated_data['code']:
 #             return validated_data
-        
+
 #         return {'phone':validated_data['phone'], 'code': 'code is not correct'}
 
 
-
-
-# update password after get code 
+# update password after get code
 class UpdatePassSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(max_length=8)
 
@@ -193,13 +179,12 @@ class UpdatePassSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         if validated_data['password'] == validated_data['confirm_password']:
-            validated_data = {'password': make_password(validated_data['password']), 'confirm_password': validated_data['confirm_password']}
+            validated_data = {'password': make_password(validated_data['password']),
+                              'confirm_password': validated_data['confirm_password']}
 
             return super().update(instance, validated_data)
 
         return {'password': validated_data['password'], 'confirm_password': 'password dose not match !'}
-    
-
 
 # send code with sms/email for varify
 # class VerifyPhoneNumberSerializer(serializers.Serializer):
@@ -209,7 +194,6 @@ class UpdatePassSerializer(serializers.ModelSerializer):
 #         print(validated_data)
 #         verify_code_update(validated_data['phone'])
 #         return validated_data
-
 
 
 # class UpdatePhoneNumberSerializer(serializers.ModelSerializer):
@@ -223,12 +207,17 @@ class UpdatePassSerializer(serializers.ModelSerializer):
 #         print(validated_data)
 #         data = verification(validated_data['phone_number'])
 
-#         if data == 'code expierd':    
+#         if data == 'code expierd':
 #             return {'phone_number':validated_data['phone_number'], 'code': 'code expierd time'}
 
-#         elif data == validated_data['code']: 
+#         elif data == validated_data['code']:
 #             # validated_data = {'phone_number': validated_data['phone_number'], 'code': validated_data['code']}
 #             return super().update(instance, validated_data)
-        
+
 #         return {'phone_number':validated_data['phone_number'], 'code': 'code is not correct'}
-    
+
+
+# class RejectSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Profile
+#         fields = ('phone_number' , )

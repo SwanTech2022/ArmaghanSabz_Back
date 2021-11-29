@@ -89,14 +89,14 @@ WSGI_APPLICATION = 'Armaghan_Sabz.wsgi.application'
 
 DATABASES = {
     'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': BASE_DIR / 'db.sqlite3',
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'aspower_armaghan',
-        'HOST': 'aspower.ir',
-        'PORT': '3307',  
-        'USER': 'aspower_aspower',
-        'PASSWORD': 'zoLk@t64KyV1',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE': 'django.db.backends.mysql',
+        # 'NAME': 'aspower_armaghan',
+        # 'HOST': 'aspower.ir',
+        # 'PORT': '3307',  
+        # 'USER': 'aspower_aspower',
+        # 'PASSWORD': 'zoLk@t64KyV1',
     }
 }
 

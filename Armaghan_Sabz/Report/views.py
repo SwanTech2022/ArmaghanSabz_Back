@@ -19,7 +19,7 @@ class ReaportView(viewsets.ViewSet):
     queryset = Reaport.objects.all()
     
     def allList(self, request,pk=id):
-        # queryset = Reaport.objects.all
+        queryset = Reaport.objects.all
         serializer = ReportSerializer(self.queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
      
@@ -59,4 +59,15 @@ class ReaportView(viewsets.ViewSet):
         # serializer.is_valid(raise_exception=True)
         Reaport.objects.get(id=pk).delete()
         return Response("Item has been deleted successfully", status=status.HTTP_204_NO_CONTENT)
+    
+    
+    
+class RejectView(viewsets.ViewSet):
+     
+    def destroy(self, request,pk=id):
+        queryset = Profile.objects.get(id=pk).delete()
+        # if queryset.exist():
+        #     return Response("Item has been deleted successfully", status=status.HTTP_204_NO_CONTENT)
+        # else: 
+        #     return Response("Item has not been FOUND", status=status.HTTP_404_NOT_FOUND)    
     
