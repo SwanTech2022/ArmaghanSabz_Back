@@ -1,6 +1,6 @@
 
 from Armaghan_Sabz.settings import  Kavenegar_KEY
-# from random import randint
+from random import randint
 from kavenegar import *
 from .models import Profile
 
