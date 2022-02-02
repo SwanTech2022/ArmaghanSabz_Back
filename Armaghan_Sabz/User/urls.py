@@ -10,7 +10,7 @@ from . import views
 
 urlpatterns = [
     path('phone/', PhoneNumberApi.as_view(), name='register-phone'),
-    path('otp/', views.verificationApi),
+    path('otp/', VerificationApi.as_view() ),
     # path('phone/<str:phone_number>/register/', RegisterApi.as_view(), name='register-user'),
     path('register/', RegisterApi.as_view(), name='register'),
     # path('login/', LoginApi.as_view(), name='log_in'),

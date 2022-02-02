@@ -8,6 +8,6 @@ class Checklist(models.Model):
     title = models.TextField()
     name = models.CharField(max_length=500)
     signe = models.TextField(null=True)
-    function = models.TextField()
-    type = models.TextField()
+    functions = models.TextField()
+    types = models.TextField()
     comment = models.TextField()

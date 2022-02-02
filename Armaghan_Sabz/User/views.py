@@ -1,7 +1,6 @@
 from django.db.models import fields
 from django.shortcuts import render
 from django.db import models
-from redis import ResponseError
 from rest_framework import serializers
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView
 from rest_framework.views import APIView
@@ -32,20 +31,22 @@ class PhoneNumberApi(CreateAPIView):
 
 
 # for sending SMS and start registering
-@api_view(['GET', 'POST'])
-def verificationApi(request):
-    data = {
-        'phone_number': request.POST.get('phone_number', False),
-        'code': request.data['code'],
-    }
+# @api_view(['GET', 'POST'])
+# def verificationApi(request):
+#     data = {
+#         'phone_number': request.POST.get('phone_number', False),
+#         'code': request.data['code'],
+#     }
 
-    ser = VerificationSerializer(data=data)
-    if ser.is_valid():
-        query = OTP.objects.filter(phone_number=request.POST.get('phone_number', False), code=request.POST.get('code'))
-        if query.exists():
-            return Response(status.HTTP_200_OK)
-        else:
-            return Response(status.HTTP_404_NOT_FOUND)
+#     ser = VerificationSerializer(data=data)
+#     if ser.is_valid():
+#         query = OTP.objects.filter(phone_number=request.POST.get('phone_number', False), code=request.POST.get('code'))
+#         if query.exists():
+#             return Response(status.HTTP_200_OK)
+#         else:
+#             return Response(status.HTTP_404_NOT_FOUND)
+class VerificationApi(CreateAPIView):
+    serializer_class =  VerificationSerializer
 
 
 class RegisterApi(CreateAPIView):

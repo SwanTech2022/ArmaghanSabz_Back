@@ -7,8 +7,9 @@ from rest_framework.fields import empty
 from rest_framework.response import Response
 from .models import OTP, Profile
 from django.contrib.auth.hashers import make_password
+from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from .utils import make_verification_code
+from .utils import make_verification_code, make_forget_code
 from random import randint
 
 
@@ -39,9 +40,11 @@ class OtpSerializer(serializers.ModelSerializer):
 
 
 class VerificationSerializer(serializers.Serializer):
-    # phone = serializers.CharField(max_length=11)
-    # code = serializers.CharField(max_length=5)
-
+    phone = serializers.CharField(max_length=11)
+    code = serializers.CharField(max_length=5)
+    
+    
+    
     class Meta:
         model = OTP
         fields = '__all__'
@@ -49,18 +52,21 @@ class VerificationSerializer(serializers.Serializer):
     def verify(self, validate_data):
         obj = super().create(validate_data)
 
-    # def create(self, validated_data):
-    #     phone = validated_data['phone']
-    #     code = validated_data['code']
-    #     query = OTP.objects.filter(phone_number = phone , code = code)
 
-    # if data == 'code expierd':
-    #     return {'phone':validated_data['phone'], 'code': 'code expierd time'}
 
-    # elif data == validated_data['code']:
-    #     return validated_data
+    
+    def create(self, validated_data):
+        phone = validated_data['phone']
+        code = validated_data['code']
+        query = OTP.objects.filter(phone_number = phone , code = code)
 
-    # return {'phone':validated_data['phone'], 'code': 'code is not correct'}
+        if code == 'code expierd':
+            return {'phone':validated_data['phone'], 'code': 'code expierd time'}
+
+        elif code == validated_data['code']:
+            return validated_data
+
+        return {'phone':validated_data['phone'], 'code': 'code is not correct'}
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -146,10 +152,10 @@ class ForgetPassSerializer(serializers.Serializer):
     class Meta:
         fields = ['phone_number', 'password']
 
-    # def create(self, validated_data):
-    #     print(validated_data)
-    #     make_forget_code(validated_data['phone'])
-    #     return validated_data
+    def create(self, validated_data):
+        print(validated_data)
+        make_forget_code(validated_data['phone'])
+        return validated_data
 
 
 # check sms code with entiry code for login

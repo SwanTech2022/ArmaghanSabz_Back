@@ -33,3 +33,40 @@ def make_verification_code(phone_number , token):
     except HTTPException as e: 
         print(e)
 
+
+
+
+
+
+
+def make_forget_code(phone):
+    print(phone)
+    code = str(randint(10000,99999))
+    print(code)
+
+    # send sms
+    if len('phone') == 11:
+        print('phone')
+        phone = phone 
+        user = Profile.objects.filter(phone_number=phone)
+
+        if len(user) > 0 :
+            pn = phone[1:]
+            # rdis.set(pn, code, 120)
+            print('code is :', code)
+            
+            try:
+                api = KavenegarAPI('616D734A466F564151424C36314F4865494263565742743955584E525739706F4C324E4758567868496B303D')
+                params = {
+                    'sender': '1000596446',#optional
+                    'receptor': '+98' + str(pn),#multiple mobile number, split by comma
+                    'message': 'برای بازیابی رمز عبور کد زیر را وارد کنید : \n' + str(code),
+                } 
+                response = api.sms_send(params)
+                print(response)
+
+            except APIException as e: 
+                print(e)
+
+            except HTTPException as e: 
+                print(e)

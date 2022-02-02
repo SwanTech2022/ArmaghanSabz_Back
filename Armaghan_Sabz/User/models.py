@@ -62,12 +62,15 @@ class Profile(AbstractBaseUser , PermissionsMixin):
         return self.phone_number
 
 
+
+
+
 class OTP(models.Model):
     phone_number = models.IntegerField()
     code = models.IntegerField(null=True)
     
     
-    
+
     
 class phoneModel(models.Model):
     Mobile = models.IntegerField(blank=False)

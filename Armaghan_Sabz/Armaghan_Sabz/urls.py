@@ -19,6 +19,7 @@ from django.urls.conf import include
 from User import urls as User_urls 
 from ChekList import urls as ChekList_urlss
 from Report import urls as Report_urls
+from Parameter import urls as Parameter_urls
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 
@@ -27,6 +28,7 @@ urlpatterns = [
     path('user/', include('User.urls')),
     path('cheklist/', include('ChekList.urls')),
     path('report/', include('Report.urls')),
+    path('parameter/', include('Parameter.urls')),
 ]
 
 

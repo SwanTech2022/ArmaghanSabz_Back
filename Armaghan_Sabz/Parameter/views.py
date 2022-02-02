@@ -21,7 +21,7 @@ class ParameterView(viewsets.ViewSet):
     queryset = Parameter.objects.all()
 
     def list(self, request):
-        queryset = Parameter.objects.filter(kind = request.GET.get('kind', False), confirm = request.GET.get('confirm', False))
+        queryset = Parameter.objects.all()
         serializer = ParameterSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
