@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'Report',
     'Parameter',
+    'phone_verify',
 
 ]
 
@@ -167,3 +168,20 @@ MEDIA_ROOT = '/home/aspoweri/public_html/media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'User.Profile'
+
+
+
+
+PHONE_VERIFICATION = {
+        'BACKEND': 'phone_verify.backends.twilio.TwilioBackend',
+        'TWILIO_SANDBOX_TOKEN':'123456',
+        'OPTIONS': {
+            'SID': 'fake',
+            'SECRET': 'fake',
+            'FROM': '+98'
+        },
+        'TOKEN_LENGTH': 6,
+        'MESSAGE': 'Welcome to {app}! Please use security code {otp} to proceed.',
+        'APP_NAME': 'Phone Verify',
+        'OTP_EXPIRATION_TIME': 3600  # In seconds only
+    }

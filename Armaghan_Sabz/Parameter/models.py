@@ -8,3 +8,4 @@ class Parameter(models.Model):
     title = models.TextField()
     subtitle = models.TextField()
     function = models.TextField()
+    engineer_name = models.TextField()

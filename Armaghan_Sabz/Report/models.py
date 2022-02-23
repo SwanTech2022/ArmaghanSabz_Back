@@ -8,6 +8,7 @@ class Reaport(models.Model):
     user_name = models.TextField()
     reciver = models.TextField()
     subject = models.TextField()
+    body = models.TextField()
     NotableItem = models.TextField()
     FutureActions = models.TextField()
     signe = models.TextField()

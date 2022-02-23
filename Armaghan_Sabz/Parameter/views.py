@@ -43,8 +43,8 @@ class ParameterView(viewsets.ViewSet):
 
 
     def destroy(self, request,pk=id):
-        serializer = ParameterSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+        # serializer = ParameterSerializer(data=request.data)
+        # serializer.is_valid(raise_exception=True)
         Parameter.objects.get(id=pk).delete()
         return Response("Item has been deleted successfully", status=status.HTTP_204_NO_CONTENT)
 

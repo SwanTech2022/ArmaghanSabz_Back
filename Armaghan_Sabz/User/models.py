@@ -41,7 +41,7 @@ class Profile(AbstractBaseUser , PermissionsMixin):
     address = models.CharField(max_length=500 , unique=True)
     post_code = models.TextField()
     telephone = models.TextField()
-    phone_number = models.CharField(unique=True , max_length=13)
+    phone_number = models.TextField(unique=True , max_length=11)
     support_phone_number = models.TextField()
     education = models.CharField(max_length=500)
     grade = models.CharField(max_length=500)
@@ -66,7 +66,7 @@ class Profile(AbstractBaseUser , PermissionsMixin):
 
 
 class OTP(models.Model):
-    phone_number = models.IntegerField()
+    phone_number = models.TextField(max_length=11)
     code = models.IntegerField(null=True)
     
     

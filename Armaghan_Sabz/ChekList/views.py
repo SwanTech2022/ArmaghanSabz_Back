@@ -21,7 +21,7 @@ class ChecklistView(viewsets.ViewSet):
     queryset = Checklist.objects.all()
 
     def list(self, request):
-        queryset = Checklist.objects.filter(kind = request.GET.get('kind', False), confirm = request.GET.get('confirm', False))
+        queryset = Checklist.objects.all()
         serializer = ChecklistSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -43,8 +43,6 @@ class ChecklistView(viewsets.ViewSet):
 
 
     def destroy(self, request,pk=id):
-        serializer = ChecklistSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
         Checklist.objects.get(id=pk).delete()
         return Response("Item has been deleted successfully", status=status.HTTP_204_NO_CONTENT)
 

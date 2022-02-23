@@ -25,6 +25,8 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 
 
+
+
 # for making code and send sms
 class PhoneNumberApi(CreateAPIView):
     serializer_class = OtpSerializer
@@ -102,8 +104,8 @@ class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomJWTSerializer
 
 
-# forget pass with phone/email
-class ForgetPassView(CreateAPIView):
+# forget pass with phone
+class ForgetPassView(UpdateAPIView):
     serializer_class = ForgetPassSerializer
 
 
@@ -115,11 +117,34 @@ class ForgetPassView(CreateAPIView):
 # change pass with phone_number
 class UpdatePassPhoneApiView(UpdateAPIView):
     serializer_class = UpdatePassSerializer
-    lookup_field = 'phone_number'
+    queryset = Profile.objects.all()
 
-    def get_queryset(self):
-        query = (str(self.request).split('/'))
-        return Profile.objects.filter(phone_number=str(query[3]))
+    def get_object(self,pk ):
+        try:
+            return Profile.objects.get(pk=pk)
+        except Exception as e:
+            return Response({'message':str(e)})
+
+    def put(self,request,pk,format=None ):
+        user = self.get_object(pk) 
+        serializer = self.serializer_class(user,data=request.data)
+
+        if serializer.is_valid():            
+            serializer.save()
+            user.set_password(serializer.data.get('password'))
+            user.save()
+            return Response(serializer.data)    
+        return Response({'message':True})
+    
+
+
+    
+    def update(self, request, *args, **kwargs):
+        serializer = self.serializer_class(request.user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 
 class RejectView(viewsets.ViewSet):
