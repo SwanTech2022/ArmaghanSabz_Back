@@ -8,3 +8,11 @@ class ChecklistSerializer(serializers.ModelSerializer):
    class Meta:
       fields = '__all__'
       model = Checklist
+      
+      
+      
+      
+class SigneSerializer(serializers.ModelSerializer):
+   class Meta:
+      fields = '__all__'
+      model = Signe        

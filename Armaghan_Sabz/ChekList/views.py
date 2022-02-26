@@ -13,6 +13,8 @@ from rest_framework.viewsets import GenericViewSet
 from django.views.generic import ListView
 from django.core.paginator import Paginator
 from django.shortcuts import render
+from rest_framework.generics import CreateAPIView, ListAPIView , RetrieveAPIView
+
 
 
 
@@ -59,3 +61,16 @@ class ContactListView(ListView):
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         return render(request, 'list.html', {'page_obj': page_obj})
+    
+    
+
+
+class SigneView(CreateAPIView):
+    serializer_class = SigneSerializer    
+    
+    
+
+class SigneListView(RetrieveAPIView):
+    queryset = Signe.objects.all()
+    serializer_class = SigneSerializer
+    lookup_field = 'id'    

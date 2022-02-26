@@ -138,13 +138,21 @@ class RegisterSerializer(serializers.ModelSerializer):
         fields = '__all__'
         extra_kwargs = {
             'password': {'write_only': True},
+            'name': {'required': True},
+            'family': {'required': True},
+            'phone_number': {'required': True},
+            'telephone': {'required': True},
+            'id_number': {'required': True},
+            'serial_number': {'required': True},
+            'address': {'required': True},
+            'education': {'required': True},
+            'grade': {'required': True},
         }
 
     def create(self, validated_data):
         user = Profile.objects.create(
             name=validated_data['name'],
             family=validated_data['family'],
-            identity_code=validated_data['identity_code'],
             password=make_password(validated_data['password']),
             phone_number=validated_data['phone_number'],
             id_number=validated_data['id_number'],
@@ -159,17 +167,20 @@ class RegisterSerializer(serializers.ModelSerializer):
             workplace_address=validated_data['workplace_address'],
             job_position=validated_data['job_position'],
             workplace_number=validated_data['workplace_number'],
-            permission=validated_data['permission'])
-
+            is_staff = validated_data['is_staff'],
+            is_active = validated_data['is_active'],
+            is_superuser = validated_data['is_superuser']
+            )
+            
         return user
 
 
-class LoginSerializer(serializers.ModelSerializer):
-    def validate(self, validated_data):
-        if Profile.objects.filter(phone=validated_data['phone_number']):
-            # ,Permission=True
-            pass
-        return validated_data
+# class LoginSerializer(serializers.ModelSerializer):
+#     def validate(self, validated_data):
+#         if Profile.objects.filter(phone=validated_data['phone_number']):
+#             # ,Permission=True
+#             pass
+#         return validated_data
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -184,7 +195,7 @@ class UserSerializer(serializers.ModelSerializer):
 class EditProfileUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        exclude = ('password', )
+        exclude = ('password','phone_number')
         extra_kwargs = {
             'password': {'write_only': True},
         }
@@ -194,7 +205,6 @@ class EditProfileUserSerializer(serializers.ModelSerializer):
 
 class CustomJWTSerializer(TokenObtainPairSerializer):
     username_field = 'phone_number'
-
     def validate(self, attrs):
         credentials = {
             'phone_number': '',
@@ -204,22 +214,22 @@ class CustomJWTSerializer(TokenObtainPairSerializer):
 
         if user_obj:
             credentials['phone_number'] = user_obj.phone_number
+            
+        data = super().validate(credentials)
+        data['is_staff'] = self.user.is_staff
+        data['is_active'] = self.user.is_active
+        data['is_superuser'] = self.user.is_superuser
+        
 
-        return super().validate(credentials)
+        return data
 
 
 # forget pass send code with phone/email
 class ForgetPassSerializer(serializers.Serializer):
-    phone = serializers.IntegerField()
-    class Meta:
-        fields = ['phone_number', 'password']
-
-    def create(self, validated_data):
-        print(validated_data)
-        make_forget_code(validated_data['phone'])
-        return validated_data
-
-
+        model = Profile
+        password = serializers.CharField(required=True)
+        confirm_password = serializers.CharField(required=True)
+    
 # check sms code with entiry code for login
 # class VerificationForgetSerializer(serializers.Serializer):
 #     phone = serializers.IntegerField()
@@ -239,7 +249,8 @@ class ForgetPassSerializer(serializers.Serializer):
 
 # update password after get code
 class UpdatePassSerializer(serializers.ModelSerializer):
-    confirm_password = serializers.CharField(max_length=8)
+    password = serializers.CharField(required=True)
+    confirm_password = serializers.CharField(required=True)
 
     class Meta:
         model = Profile
@@ -253,5 +264,4 @@ class UpdatePassSerializer(serializers.ModelSerializer):
             return super().update(instance, validated_data)
 
         return {'password': validated_data['password'], 'confirm_password': 'password dose not match !'}
-    
- 
+  

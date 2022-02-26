@@ -11,6 +11,7 @@ from rest_framework import viewsets , status
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework.viewsets import GenericViewSet
+from rest_framework.generics import CreateAPIView, ListAPIView ,RetrieveAPIView
 
 
 
@@ -69,5 +70,19 @@ class RejectView(viewsets.ViewSet):
         # if queryset.exist():
         #     return Response("Item has been deleted successfully", status=status.HTTP_204_NO_CONTENT)
         # else: 
-        #     return Response("Item has not been FOUND", status=status.HTTP_404_NOT_FOUND)    
+        #     return Response("Item has not been FOUND", status=status.HTTP_404_NOT_FOUND)  
+        
+        
+        
+
+
+
+class SigneView(CreateAPIView):
+    serializer_class = SigneSerializer    
     
+    
+
+class SigneListView(RetrieveAPIView):
+    queryset = Signe.objects.all()
+    serializer_class = SigneSerializer
+    lookup_field = 'id'

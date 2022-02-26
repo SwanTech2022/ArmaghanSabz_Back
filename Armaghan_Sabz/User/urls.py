@@ -18,10 +18,8 @@ urlpatterns = [
     path('user/<str:phone_number>/', ProfileView.as_view(), name='profile'),
     path('user/<str:phone_number>/edit/', EditProfileView.as_view(), name='edit-profile'),
     # path('user/<int:pk>/edit/phone/update/', EditPhoneNumberApiView.as_view(), name='edit-phone'),
-    path('login/', MyTokenObtainPairView.as_view(serializer_class=CustomJWTSerializer)),
+    path('login/', LoginApiView.as_view(), name='login'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token-refresh'),
-    path('forget/', ForgetPassView.as_view(), name= 'forget-pass'),
-    # path('forget/code/',VerificationForgetApi.as_view(), name= 'forget-pass-code'),
-    path('forget/<int:phone_number>/phone/update/', UpdatePassPhoneApiView.as_view(), name= 'update-pass-phone'),
+    path('user/<str:phone_number>/forget/', UpdatePassPhoneView.as_view(), name='forget'),
     path('delete/<int:pk>/' , RejectView.as_view({'delete': 'destroy',}),  name= 'reject-phone'),
 ]

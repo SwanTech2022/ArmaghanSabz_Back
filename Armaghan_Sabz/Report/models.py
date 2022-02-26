@@ -4,6 +4,13 @@ from User.models import Profile
 
 
 
+
+
+class Signe(models.Model):
+    signe = models.TextField(null=True)
+
+
+
 class Reaport(models.Model):
     user_name = models.TextField()
     reciver = models.TextField()
@@ -11,7 +18,7 @@ class Reaport(models.Model):
     body = models.TextField()
     NotableItem = models.TextField()
     FutureActions = models.TextField()
-    signe = models.TextField()
+    singe_rep = models.ForeignKey(Signe ,on_delete=models.CASCADE)
     date = models.TextField()
     time = models.TextField()
     file_name = models.TextField()

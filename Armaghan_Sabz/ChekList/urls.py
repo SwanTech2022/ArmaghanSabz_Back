@@ -8,4 +8,6 @@ urlpatterns = [
     path('create/', ChecklistView.as_view({'post': 'create', })),
     path('update/<int:pk>/', ChecklistView.as_view({'put': 'retrieve', })),
     path('delete/<int:pk>/', ChecklistView.as_view({'delete': 'destroy', })),
+    path('createSigne/', SigneView.as_view()),
+    path('signe/<int:id>/', SigneListView.as_view()),
 ]
