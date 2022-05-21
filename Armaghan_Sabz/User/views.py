@@ -14,7 +14,7 @@ from .serializers import (EditProfileUserSerializer, OtpSerializer, UpdatePassSe
     # UpdatePhoneNumberSerializer,
                           )
 from .models import Profile
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .utils import make_verification_code
 from rest_framework import status, request, viewsets
@@ -23,6 +23,7 @@ from .models import *
 from rest_framework.decorators import api_view
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
+from django.shortcuts import get_object_or_404
 
 
 
@@ -30,6 +31,7 @@ from rest_framework.authtoken.models import Token
 # for making code and send sms
 class PhoneNumberApi(CreateAPIView):
     serializer_class = OtpSerializer
+    permission_classes = [AllowAny]
 
 
 # for sending SMS and start registering
@@ -51,11 +53,13 @@ class PhoneNumberApi(CreateAPIView):
 
 class VerificationApi(CreateAPIView):
     serializer_class =  VerificationSerializer
+    permission_classes = [AllowAny]
     
 
 
 class RegisterApi(CreateAPIView):
     serializer_class = RegisterSerializer
+    permission_classes = [AllowAny]
 
 
 # class LoginApiView(ObtainAuthToken):
@@ -74,24 +78,31 @@ class RegisterApi(CreateAPIView):
 
 
 class UserListView(ListAPIView):
-    # permission_classes = (IsAdminUser,)
+    permission_classes = (IsAdminUser,)
     queryset = Profile.objects.all()
     serializer_class = UserSerializer
     lookup_field = 'phone_number'
 
 
 class ProfileView(RetrieveAPIView):
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
     queryset = Profile.objects.all()
     serializer_class = UserSerializer
     lookup_field = 'phone_number'
 
 
 class EditProfileView(UpdateAPIView):
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
     queryset = Profile.objects.all()
     serializer_class = EditProfileUserSerializer
     lookup_field = 'phone_number'
+    
+    def update(self, request, phone_number):
+        datas = get_object_or_404(self.queryset, phone_number=phone_number)
+        ser = self.serializer_class(data=self.request.data, instance=datas)
+        ser.is_valid(raise_exception=True)
+        ser.save()
+        return Response(ser.data, status=status.HTTP_200_OK)
 
 
 # class EditPhoneNumberApiView(UpdateAPIView):
@@ -102,11 +113,13 @@ class EditProfileView(UpdateAPIView):
 
 class LoginApiView(TokenObtainPairView):
      serializer_class = CustomJWTSerializer
+     permission_classes = [AllowAny]
 
 
 # forget pass with phone
 class ForgetPassView(UpdateAPIView):
     serializer_class = ForgetPassSerializer
+    permission_classes = [AllowAny]
 
 
 # # for verify code
@@ -117,7 +130,7 @@ class ForgetPassView(UpdateAPIView):
 # change pass with phone_number
 
 class UpdatePassPhoneView(UpdateAPIView):
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = [AllowAny]
     serializer_class = ForgetPassSerializer
     model = Profile
     
@@ -153,6 +166,7 @@ class UpdatePassPhoneView(UpdateAPIView):
         
 
 class RejectView(viewsets.ViewSet):
+    permission_classes = (IsAdminUser,)
 
     def destroy(self, request, pk=id):
         queryset = Profile.objects.get(id=pk).delete()

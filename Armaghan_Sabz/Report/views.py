@@ -12,12 +12,15 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.generics import CreateAPIView, ListAPIView ,RetrieveAPIView
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
+
 
 
 
 class ReaportView(viewsets.ViewSet):
     serializer_class = ReportSerializer
     queryset = Reaport.objects.all()
+    permission_classes = (IsAuthenticated,)
     
     def allList(self, request,pk=id):
         queryset = Reaport.objects.all
@@ -64,6 +67,7 @@ class ReaportView(viewsets.ViewSet):
     
     
 class RejectView(viewsets.ViewSet):
+    permission_classes = (IsAuthenticated,)
      
     def destroy(self, request,pk=id):
         queryset = Profile.objects.get(id=pk).delete()
@@ -78,11 +82,13 @@ class RejectView(viewsets.ViewSet):
 
 
 class SigneView(CreateAPIView):
-    serializer_class = SigneSerializer    
+    serializer_class = SigneSerializer   
+    permission_classes = (IsAuthenticated,)
     
     
 
 class SigneListView(RetrieveAPIView):
+    permission_classes = (IsAuthenticated,)
     queryset = Signe.objects.all()
     serializer_class = SigneSerializer
     lookup_field = 'id'

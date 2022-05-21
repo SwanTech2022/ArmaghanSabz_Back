@@ -33,28 +33,26 @@ from .managers import MyUserManager
 
 
 class Profile(AbstractBaseUser , PermissionsMixin):
-    name = models.CharField(max_length=100 , default=None, null=True)
-    family = models.CharField(max_length=100)
-    identity_code = models.TextField()
+    name = models.TextField()
+    family = models.TextField()
     id_number = models.TextField()
     serial_number = models.TextField()
-    address = models.CharField(max_length=500 , unique=True)
-    post_code = models.TextField()
-    telephone = models.TextField()
-    phone_number = models.TextField(unique=True , max_length=11)
-    support_phone_number = models.TextField()
-    education = models.CharField(max_length=500)
-    grade = models.CharField(max_length=500)
-    zip_code = models.TextField()
-    profession = models.CharField(max_length=300)
-    workplace_address = models.CharField(max_length=500)
-    job_position = models.CharField(max_length=500)
-    workplace_number = models.CharField(max_length=500)
-    permission = models.BooleanField(default=False)
-
+    address = models.TextField()
+    telephone = models.TextField(null=True, blank=True)
+    phone_number = models.TextField(unique=True, max_length=11, null=True, blank=True)
+    education = models.TextField()
+    grade = models.TextField()
+    support_phone_number = models.TextField(blank=True, null=True)
+    zip_code = models.TextField(blank=True, null=True)
+    profession = models.TextField(blank=True, null=True)
+    workplace_address = models.TextField(blank=True, null=True)
+    job_position = models.TextField(blank=True, null=True)
+    workplace_number = models.TextField(blank=True, null=True)
     is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
-
+    is_active = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+    USERNAME_FIELD = 'phone_number'
+    objects = MyUserManager()
     USERNAME_FIELD = 'phone_number'
     objects = MyUserManager()
     

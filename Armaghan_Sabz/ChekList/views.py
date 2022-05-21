@@ -14,11 +14,14 @@ from django.views.generic import ListView
 from django.core.paginator import Paginator
 from django.shortcuts import render
 from rest_framework.generics import CreateAPIView, ListAPIView , RetrieveAPIView
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
+
 
 
 
 
 class ChecklistView(viewsets.ViewSet):
+    permission_classes = (IsAuthenticated,)
     serializer_class = ChecklistSerializer
     queryset = Checklist.objects.all()
 
@@ -53,6 +56,7 @@ class ChecklistView(viewsets.ViewSet):
 class ContactListView(ListView):
     paginate_by = 2
     model = Checklist
+    permission_classes = (IsAuthenticated,)
 
     def listing(request):
         contact_list = Checklist.objects.all()
@@ -66,11 +70,13 @@ class ContactListView(ListView):
 
 
 class SigneView(CreateAPIView):
-    serializer_class = SigneSerializer    
+    serializer_class = SigneSerializer  
+    permission_classes = (IsAuthenticated,)
     
     
 
 class SigneListView(RetrieveAPIView):
+    permission_classes = (IsAuthenticated,)
     queryset = Signe.objects.all()
     serializer_class = SigneSerializer
     lookup_field = 'id'    

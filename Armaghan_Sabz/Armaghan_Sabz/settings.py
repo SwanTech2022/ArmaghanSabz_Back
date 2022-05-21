@@ -25,13 +25,15 @@ SECRET_KEY = 'django-insecure-fb0+b5h%fgld9z^_%x_&6@l@ci@697q&r8e95#dz#)0dy^q35)
 Kavenegar_KEY = '616D734A466F564151424C36314F4865494263565742743955584E525739706F4C324E4758567868496B303D'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
 
     'localhost',
     '127.0.0.1',
     'aspower.ir',    
+    'www.aspower.ir',    
+
 ]
 
 
@@ -50,9 +52,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'Report',
-    'Parameter',
-    'phone_verify',
-
+    'Parameter'
 ]
 
 MIDDLEWARE = [
@@ -91,14 +91,12 @@ WSGI_APPLICATION = 'Armaghan_Sabz.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-        # 'ENGINE': 'django.db.backends.mysql',
-        # 'NAME': 'aspower_armaghan',
-        # 'HOST': 'aspower.ir',
-        # 'PORT': '3307',  
-        # 'USER': 'aspower_aspower',
-        # 'PASSWORD': 'zoLk@t64KyV1',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'aspoweri_Armaghan_Sabz',
+        'USER': 'aspoweri_aspoweri',
+        'PASSWORD': '0XZ-sD3kq;aN43',
+        'HOST': 'localhost',
+        'PORT': '',  
     }
 }
 
@@ -124,9 +122,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 REST_FRAMEWORK = {
+    
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ]
 }
 

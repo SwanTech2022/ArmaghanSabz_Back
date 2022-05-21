@@ -1,0 +1,1 @@
+from Armaghan_Sabz.wsgi import application

@@ -13,12 +13,15 @@ from rest_framework.viewsets import GenericViewSet
 from django.views.generic import ListView
 from django.core.paginator import Paginator
 from django.shortcuts import render
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
+
 
 
 
 class ParameterView(viewsets.ViewSet):
     serializer_class = ParameterSerializer
     queryset = Parameter.objects.all()
+    permission_classes = (IsAuthenticated,)
 
     def list(self, request):
         queryset = Parameter.objects.all()
@@ -53,6 +56,7 @@ class ParameterView(viewsets.ViewSet):
 class ContactListView(ListView):
     paginate_by = 2
     model = Parameter
+    permission_classes = (IsAuthenticated,)
 
     def listing(request):
         contact_list = Parameter.objects.all()
